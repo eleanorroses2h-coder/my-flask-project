@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>简历生成器</h1>
+    <textarea id="content" placeholder="请输入你的背景信息或简历需求..."></textarea><br>
+    <button onclick="generateResume()">生成简历</button>
+
+    <div id="response"></div>
+
+    <script>
+        function generateResume() {
+            const content = document.getElementById("content").value;
+            fetch("http://127.0.0.1:5000/resume", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").innerHTML = `<strong>生成的简历：</strong><p>${data.response}</p>`;
+            })
+            .catch(error => {
+                document.getElementById("response").innerHTML = `<strong>错误：</strong><p>请求失败，请稍后再试。</p>`;
+            });
+        }
+    </script>
+
+</body>
+</html>
